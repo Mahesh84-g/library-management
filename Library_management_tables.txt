@@ -1,0 +1,40 @@
+-- create database library_db;
+USE library_db;
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    role ENUM('admin','student') NOT NULL
+);
+CREATE TABLE books (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    author VARCHAR(100) NOT NULL,
+    category VARCHAR(50),
+    available_copies INT DEFAULT 1
+);
+
+-- Transactions table
+CREATE TABLE transactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    book_id INT,
+    borrow_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    return_date TIMESTAMP NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (book_id) REFERENCES books(id)
+);
+
+-- Insert sample users
+INSERT INTO users(username, password, role) VALUES
+('admin', 'admin123', 'admin'),
+('mahesh', 'student123', 'student');
+
+INSERT INTO books (title, author, category, available_copies) VALUES
+('Introduction to Java', 'James Gosling', 'Programming', 5),
+('Database Systems', 'C.J. Date', 'Database', 3),
+('Operating System Concepts', 'Abraham Silberschatz', 'Operating Systems', 4),
+('Data Structures and Algorithms', 'Robert Lafore', 'Programming', 2),
+('Computer Networks', 'Andrew S. Tanenbaum', 'Networking', 6);
+
+select * from transactions ;
